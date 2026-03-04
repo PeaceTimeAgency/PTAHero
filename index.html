@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peace Time Agency — Broadcasting Harmony Across the Timeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cosmic-navy: #0D1B2A;
+    --midnight-purple: #12102B;
+    --solar-orange: #F26419;
+    --cyber-pink: #F00699;
+    --star-white: #E8EDF5;
+    --dim-star: #7A8BA0;
+    --glow-orange: rgba(242,100,25,0.35);
+    --glow-pink: rgba(240,6,153,0.35);
+    --glass-bg: rgba(13,27,42,0.55);
+    --glass-border: rgba(242,100,25,0.18);
+    --grid-line: rgba(122,139,160,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lexend', sans-serif;
+    background-color: var(--cosmic-navy);
+    color: var(--star-white);
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* === GRAIN OVERLAY === */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.45;
+  }
+
+  /* === STARFIELD CANVAS === */
+  #starfield {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* === GRID LINES === */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* === NAV === */
+  nav {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: calc(100% - 48px);
+    max-width: 1280px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+    box-shadow: 0 0 40px rgba(242,100,25,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--solar-orange), var(--cyber-pink), var(--solar-orange));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 0 16px var(--glow-orange);
+    animation: spin-logo 12s linear infinite;
+  }
+
+  @keyframes spin-logo {
+    from { filter: hue-rotate(0deg); }
+    to { filter: hue-rotate(360deg); }
+  }
+
+  .nav-logo-text {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--star-white);
+  }
+  .nav-logo-text span {
+    color: var(--solar-orange);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim-star);
+    text-decoration: none;
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--solar-orange); }
+
+  .nav-cta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cosmic-navy);
+    background: var(--solar-orange);
+    padding: 9px 22px;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 0 20px var(--glow-orange);
+  }
+  .nav-cta:hover {
+    background: var(--cyber-pink);
+    box-shadow: 0 0 30px var(--glow-pink);
+    color: #fff;
+  }
+
+  /* === SECTIONS WRAPPER === */
+  .content {
+    position: relative;
+    z-index: 10;
+  }
+
+  /* === HERO === */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--solar-orange);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fade-up 0.8s 0.3s forwards;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--solar-orange));
+  }
+  .hero-eyebrow::after { transform: scaleX(-1); }
+
+  /* === PEACE SIGN CLOCK === */
+  .peace-clock-wrapper {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    margin: 0 auto 48px;
+    opacity: 0;
+    animation: fade-scale 1s 0.5s forwards;
+  }
+
+  .orbital-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    animation: orbit linear infinite;
+  }
+
+  .ring-1 {
+    inset: -30px;
+    border-color: rgba(242,100,25,0.25);
+    animation-duration: 18s;
+    box-shadow: 0 0 30px rgba(242,100,25,0.06) inset;
+  }
+  .ring-2 {
+    inset: -60px;
+    border-color: rgba(240,6,153,0.18);
+    animation-duration: 30s;
+    animation-direction: reverse;
+  }
+  .ring-3 {
+    inset: -90px;
+    border-color: rgba(242,100,25,0.1);
+    animation-duration: 48s;
+  }
+
+  .ring-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .ring-1 .ring-dot { background: var(--solar-orange); box-shadow: 0 0 12px var(--solar-orange); }
+  .ring-2 .ring-dot { background: var(--cyber-pink); box-shadow: 0 0 12px var(--cyber-pink); width: 6px; height: 6px; top: -3px; }
+  .ring-3 .ring-dot { background: rgba(242,100,25,0.6); box-shadow: 0 0 8px rgba(242,100,25,0.6); width: 5px; height: 5px; top: -2.5px; }
+
+  @keyframes orbit {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .peace-sign {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid var(--solar-orange);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 40% 35%, rgba(242,100,25,0.12) 0%, rgba(13,27,42,0.8) 65%);
+    box-shadow:
+      0 0 60px rgba(242,100,25,0.3),
+      0 0 120px rgba(242,100,25,0.12),
+      inset 0 0 60px rgba(242,100,25,0.06);
+    animation: pulse-peace 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse-peace {
+    0%, 100% { box-shadow: 0 0 60px rgba(242,100,25,0.3), 0 0 120px rgba(242,100,25,0.12), inset 0 0 60px rgba(242,100,25,0.06); }
+    50% { box-shadow: 0 0 80px rgba(242,100,25,0.5), 0 0 160px rgba(242,100,25,0.2), inset 0 0 80px rgba(242,100,25,0.1); }
+  }
+
+  .peace-svg {
+    width: 70%;
+    height: 70%;
+    filter: drop-shadow(0 0 16px var(--solar-orange));
+  }
+
+  .hero-headline {
+    font-size: clamp(2.4rem, 5vw, 4.8rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fade-up 0.9s 0.7s forwards;
+  }
+  .hero-headline .line-accent { color: var(--solar-orange); }
+  .hero-headline .line-pink { color: var(--cyber-pink); }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--dim-star);
+    max-width: 540px;
+    margin: 0 auto 44px;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fade-up 0.9s 0.9s forwards;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fade-up 0.9s 1.1s forwards;
+  }
+
+  .btn-primary {
+    position: relative;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 36px;
+    border-radius: 4px;
+    background: linear-gradient(135deg, var(--solar-orange), #d4450a);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 32px var(--glow-orange), inset 0 1px 0 rgba(255,255,255,0.15);
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+    transition: left 0.5s;
+  }
+  .btn-primary:hover::before { left: 100%; }
+  .btn-primary:hover {
+    box-shadow: 0 0 50px var(--glow-orange), 0 8px 30px rgba(242,100,25,0.4);
+    transform: translateY(-2px);
+  }
+
+  .btn-toggle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim-star);
+    text-decoration: none;
+    padding: 14px 32px;
+    border-radius: 4px;
+    background: transparent;
+    border: 1px solid rgba(122,139,160,0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-toggle:hover {
+    border-color: var(--cyber-pink);
+    color: var(--cyber-pink);
+    box-shadow: 0 0 20px var(--glow-pink);
+    background: rgba(240,6,153,0.05);
+  }
+
+  /* floating tiktok frames */
+  .tiktok-floaters {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .tiktok-frame {
+    position: absolute;
+    border-radius: 16px;
+    border: 1px solid rgba(242,100,25,0.2);
+    background: rgba(13,27,42,0.7);
+    backdrop-filter: blur(8px);
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(242,100,25,0.08);
+    animation: float-frame ease-in-out infinite;
+  }
+
+  .tf-1 { width: 90px; height: 160px; left: 5%; top: 25%; animation-duration: 7s; animation-delay: 0s; }
+  .tf-2 { width: 75px; height: 133px; right: 8%; top: 30%; animation-duration: 9s; animation-delay: 1.5s; }
+  .tf-3 { width: 60px; height: 107px; left: 15%; bottom: 20%; animation-duration: 11s; animation-delay: 3s; opacity: 0.6; }
+  .tf-4 { width: 60px; height: 107px; right: 18%; bottom: 25%; animation-duration: 8s; animation-delay: 2s; opacity: 0.5; }
+
+  @keyframes float-frame {
+    0%, 100% { transform: translateY(0px) rotate(-1deg); }
+    50% { transform: translateY(-18px) rotate(1deg); }
+  }
+
+  .tf-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .tf-video-area {
+    flex: 1;
+    background: linear-gradient(160deg, rgba(18,16,43,0.9), rgba(13,27,42,0.95));
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tf-play {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(242,100,25,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 14px var(--solar-orange);
+    font-size: 8px;
+    color: #fff;
+  }
+  .tf-bar {
+    height: 2px;
+    margin: 6px 8px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--solar-orange), var(--cyber-pink));
+  }
+  .tf-live-badge {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 6px;
+    font-weight: 700;
+    background: var(--cyber-pink);
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.08em;
+    box-shadow: 0 0 8px var(--cyber-pink);
+  }
+  .tf-viewers {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 6px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-scale {
+    from { opacity: 0; transform: scale(0.88); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* === SECTION COMMONS === */
+  section {
+    padding: 100px 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--solar-orange);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--solar-orange);
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .section-title .accent { color: var(--solar-orange); }
+  .section-title .pink { color: var(--cyber-pink); }
+
+  .section-desc {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--dim-star);
+    line-height: 1.7;
+    max-width: 480px;
+  }
+
+  /* === BENTO GRID — STATS === */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 16px;
+    margin-top: 64px;
+  }
+
+  .bento-card {
+    background: rgba(18,16,43,0.6);
+    border: 1px solid rgba(122,139,160,0.1);
+    border-radius: 16px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    backdrop-filter: blur(10px);
+  }
+  .bento-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(242,100,25,0.03), transparent 60%);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .bento-card:hover {
+    border-color: rgba(242,100,25,0.3);
+    box-shadow: 0 0 40px rgba(242,100,25,0.08), 0 8px 30px rgba(0,0,0,0.3);
+    transform: translateY(-4px);
+  }
+  .bento-card:hover.pink-hover {
+    border-color: rgba(240,6,153,0.3);
+    box-shadow: 0 0 40px rgba(240,6,153,0.08), 0 8px 30px rgba(0,0,0,0.3);
+  }
+
+  .bc-1 { grid-column: span 4; grid-row: span 1; }
+  .bc-2 { grid-column: span 4; grid-row: span 1; }
+  .bc-3 { grid-column: span 4; grid-row: span 1; }
+  .bc-4 { grid-column: span 6; grid-row: span 2; min-height: 280px; }
+  .bc-5 { grid-column: span 3; }
+  .bc-6 { grid-column: span 3; }
+  .bc-7 { grid-column: span 3; }
+  .bc-8 { grid-column: span 3; }
+
+  .stat-number {
+    font-size: 3.2rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--solar-orange), #ffa040);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-number.pink-stat {
+    background: linear-gradient(135deg, var(--cyber-pink), #ff69c8);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim-star);
+  }
+  .stat-sublabel {
+    font-size: 0.78rem;
+    color: rgba(122,139,160,0.6);
+    margin-top: 4px;
+  }
+
+  /* live chart card */
+  .bc-4 { padding: 28px; }
+  .mini-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 80px;
+    margin-top: 24px;
+    margin-bottom: 12px;
+  }
+  .chart-bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    background: linear-gradient(180deg, var(--solar-orange), rgba(242,100,25,0.3));
+    animation: bar-grow 1s ease forwards;
+    transform-origin: bottom;
+    transform: scaleY(0);
+    box-shadow: 0 -4px 12px rgba(242,100,25,0.3);
+  }
+  @keyframes bar-grow {
+    to { transform: scaleY(1); }
+  }
+  .chart-label-row {
+    display: flex;
+    gap: 6px;
+  }
+  .chart-label-row span {
+    flex: 1;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: var(--dim-star);
+    text-align: center;
+  }
+
+  .live-indicator {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+  }
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--cyber-pink);
+    box-shadow: 0 0 10px var(--cyber-pink);
+    animation: blink-dot 1.4s ease-in-out infinite;
+  }
+  @keyframes blink-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+  .live-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cyber-pink);
+  }
+
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 18px;
+  }
+  .icon-orange { background: rgba(242,100,25,0.12); border: 1px solid rgba(242,100,25,0.2); }
+  .icon-pink { background: rgba(240,6,153,0.12); border: 1px solid rgba(240,6,153,0.2); }
+
+  /* === ACTIVE TRANSMISSIONS === */
+  .transmissions-section {
+    padding: 100px 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .trans-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .stream-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+  }
+
+  .stream-card {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(122,139,160,0.1);
+    background: rgba(18,16,43,0.7);
+    transition: all 0.35s;
+    cursor: pointer;
+    position: relative;
+  }
+  .stream-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: var(--solar-orange);
+    box-shadow: 0 12px 50px rgba(242,100,25,0.18);
+  }
+
+  .stream-thumb {
+    height: 180px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .stream-thumb-bg {
+    position: absolute;
+    inset: 0;
+    animation: thumb-hue 8s linear infinite alternate;
+  }
+  @keyframes thumb-hue {
+    from { filter: hue-rotate(0deg); }
+    to { filter: hue-rotate(40deg); }
+  }
+  .bg-1 { background: linear-gradient(135deg, #1a0a2e, #2d0b3d, #0d1b2a); }
+  .bg-2 { background: linear-gradient(135deg, #1a1a0a, #2d1f0b, #0d1b2a); }
+  .bg-3 { background: linear-gradient(135deg, #0a1a2e, #0b2d2d, #0d1b2a); }
+  .bg-4 { background: linear-gradient(135deg, #2a0a1a, #3d0b2d, #0d1b2a); }
+
+  .stream-play-btn {
+    position: relative;
+    z-index: 2;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(242,100,25,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 24px var(--solar-orange);
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+  }
+  .stream-card:hover .stream-play-btn {
+    background: var(--cyber-pink);
+    box-shadow: 0 0 32px var(--cyber-pink);
+    transform: scale(1.1);
+  }
+
+  .stream-live-pill {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 3;
+    background: var(--cyber-pink);
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 4px 9px;
+    border-radius: 4px;
+    box-shadow: 0 0 12px var(--cyber-pink);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .stream-live-pill::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #fff;
+    animation: blink-dot 1s infinite;
+  }
+
+  .stream-viewers-pill {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    background: rgba(13,27,42,0.8);
+    border: 1px solid rgba(122,139,160,0.2);
+    color: var(--star-white);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    padding: 4px 9px;
+    border-radius: 4px;
+    backdrop-filter: blur(6px);
+  }
+
+  .stream-info {
+    padding: 16px;
+  }
+  .stream-creator {
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--star-white);
+  }
+  .stream-title {
+    font-size: 0.72rem;
+    color: var(--dim-star);
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .stream-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: rgba(242,100,25,0.1);
+    border: 1px solid rgba(242,100,25,0.2);
+    color: var(--solar-orange);
+  }
+  .tag.pink {
+    background: rgba(240,6,153,0.1);
+    border-color: rgba(240,6,153,0.2);
+    color: var(--cyber-pink);
+  }
+
+  /* === WHY SECTION === */
+  .why-section {
+    padding: 100px 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-top: 64px;
+    max-width: 720px;
+  }
+
+  .why-features {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .feature-item {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid rgba(122,139,160,0.08);
+    background: rgba(18,16,43,0.4);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--solar-orange);
+    border-radius: 0 2px 2px 0;
+    box-shadow: 0 0 10px var(--solar-orange);
+    transform: scaleY(0);
+    transition: transform 0.3s;
+  }
+  .feature-item.pink-border::before { background: var(--cyber-pink); box-shadow: 0 0 10px var(--cyber-pink); }
+  .feature-item:hover::before { transform: scaleY(1); }
+  .feature-item:hover {
+    border-color: rgba(242,100,25,0.2);
+    background: rgba(18,16,43,0.7);
+  }
+
+  .feature-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--solar-orange);
+    min-width: 24px;
+    margin-top: 2px;
+  }
+
+  .feature-content h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .feature-content p {
+    font-size: 0.82rem;
+    color: var(--dim-star);
+    line-height: 1.6;
+  }
+
+  /* TERMINAL CARD */
+  .terminal-card {
+    background: rgba(10,12,20,0.9);
+    border: 1px solid rgba(242,100,25,0.2);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(242,100,25,0.08);
+  }
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(242,100,25,0.06);
+    border-bottom: 1px solid rgba(242,100,25,0.12);
+  }
+  .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .t-dot-r { background: #ff5f57; }
+  .t-dot-y { background: #febc2e; }
+  .t-dot-g { background: #28c840; }
+  .terminal-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--dim-star);
+    margin-left: 8px;
+    letter-spacing: 0.1em;
+  }
+  .terminal-body {
+    padding: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    line-height: 1.9;
+    color: #7A8BA0;
+  }
+  .t-line { display: block; }
+  .t-prompt { color: var(--solar-orange); }
+  .t-cmd { color: var(--star-white); }
+  .t-output { color: var(--dim-star); }
+  .t-success { color: #28c840; }
+  .t-pink { color: var(--cyber-pink); }
+  .t-cursor {
+    display: inline-block;
+    width: 8px; height: 13px;
+    background: var(--solar-orange);
+    animation: cursor-blink 1s step-end infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+  @keyframes cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* === RECRUITMENT / CTA SECTION === */
+  .recruit-section {
+    padding: 100px 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .recruit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 64px;
+  }
+
+  .recruit-main-card {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(242,100,25,0.08) 0%, rgba(240,6,153,0.06) 50%, rgba(18,16,43,0.8) 100%);
+    border: 1px solid rgba(242,100,25,0.2);
+    border-radius: 20px;
+    padding: 56px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .recruit-main-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(242,100,25,0.06), transparent 70%);
+    pointer-events: none;
+  }
+
+  .recruit-title {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .recruit-desc {
+    font-size: 1rem;
+    color: var(--dim-star);
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto 40px;
+    position: relative;
+  }
+
+  .recruit-perks {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 44px;
+    position: relative;
+  }
+
+  .perk-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--dim-star);
+    letter-spacing: 0.05em;
+  }
+  .perk-check {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(242,100,25,0.15);
+    border: 1px solid rgba(242,100,25,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: var(--solar-orange);
+  }
+
+  .small-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    grid-column: 1 / -1;
+  }
+
+  .info-card {
+    background: rgba(18,16,43,0.7);
+    border: 1px solid rgba(122,139,160,0.1);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.3s;
+  }
+  .info-card:hover {
+    border-color: rgba(242,100,25,0.25);
+    transform: translateY(-3px);
+  }
+  .info-card h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .info-card p {
+    font-size: 0.82rem;
+    color: var(--dim-star);
+    line-height: 1.6;
+  }
+
+  /* === FOOTER === */
+  footer {
+    position: relative;
+    padding: 80px 24px 40px;
+    overflow: hidden;
+    border-top: 1px solid rgba(122,139,160,0.08);
+  }
+
+  .footer-nebula {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 20% 80%, rgba(240,6,153,0.05), transparent),
+      radial-gradient(ellipse 50% 70% at 80% 20%, rgba(242,100,25,0.06), transparent),
+      radial-gradient(ellipse 40% 40% at 50% 100%, rgba(18,16,43,0.8), transparent);
+    animation: nebula-drift 20s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes nebula-drift {
+    from { transform: scale(1) translate(0,0); }
+    to { transform: scale(1.05) translate(1%, -1%); }
+  }
+
+  .footer-inner {
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 60px;
+  }
+
+  .footer-brand p {
+    font-size: 0.82rem;
+    color: var(--dim-star);
+    line-height: 1.7;
+    margin-top: 16px;
+    max-width: 280px;
+  }
+
+  .footer-logo-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .footer-logo-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--solar-orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px rgba(242,100,25,0.25);
+  }
+
+  .footer-col-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--solar-orange);
+    margin-bottom: 20px;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-links a {
+    font-size: 0.82rem;
+    color: var(--dim-star);
+    text-decoration: none;
+    transition: color 0.25s;
+  }
+  .footer-links a:hover { color: var(--star-white); }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(122,139,160,0.08);
+  }
+
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(122,139,160,0.5);
+    letter-spacing: 0.1em;
+  }
+
+  .footer-signal {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(122,139,160,0.5);
+    letter-spacing: 0.08em;
+  }
+  .signal-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+  }
+  .signal-bar {
+    width: 3px;
+    border-radius: 1px;
+    background: var(--solar-orange);
+    box-shadow: 0 0 4px var(--solar-orange);
+  }
+  .sb-1 { height: 4px; }
+  .sb-2 { height: 7px; }
+  .sb-3 { height: 10px; }
+  .sb-4 { height: 12px; animation: signal-pulse 1.5s 0.3s ease-in-out infinite; }
+
+  @keyframes signal-pulse {
+    0%,100%{opacity:1} 50%{opacity:0.3}
+  }
+
+  /* === DIVIDER === */
+  .cosmic-divider {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(242,100,25,0.3), rgba(240,6,153,0.2), transparent);
+  }
+
+  /* === TICKER === */
+  .ticker-wrap {
+    overflow: hidden;
+    background: rgba(242,100,25,0.06);
+    border-top: 1px solid rgba(242,100,25,0.1);
+    border-bottom: 1px solid rgba(242,100,25,0.1);
+    padding: 10px 0;
+  }
+  .ticker-track {
+    display: flex;
+    gap: 48px;
+    animation: ticker-scroll 30s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--solar-orange);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .ticker-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--cyber-pink); }
+  @keyframes ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* === SCROLL REVEAL === */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 900px) {
+    .bento-grid { grid-template-columns: 1fr 1fr; }
+    .bc-1,.bc-2,.bc-3 { grid-column: span 1; }
+    .bc-4 { grid-column: span 2; }
+    .bc-5,.bc-6,.bc-7,.bc-8 { grid-column: span 1; }
+    .why-grid { grid-template-columns: 1fr; }
+    .recruit-grid { grid-template-columns: 1fr; }
+    .small-cards { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .tiktok-floaters { display: none; }
+  }
+
+  @media (max-width: 560px) {
+    .footer-top { grid-template-columns: 1fr; }
+    .stream-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">☮</div>
+    <span class="nav-logo-text">Peace <span>Time</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#transmissions">Transmissions</a></li>
+    <li><a href="#stats">Stats</a></li>
+    <li><a href="#agency">Agency</a></li>
+    <li><a href="#recruit">Recruit</a></li>
+  </ul>
+  <a href="#recruit" class="nav-cta">Apply Now</a>
+</nav>
+
+<!-- TICKER -->
+<div style="margin-top:0; position:relative; z-index:10;">
+  <div class="ticker-wrap" style="margin-top:80px;">
+    <div class="ticker-track">
+      <span class="ticker-item"><span class="ticker-dot"></span> Active Agents: 247</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Live Streams Running: 31</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Total Views This Cycle: 8.4M</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Peace Transmissions: ONLINE</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Creator Revenue Generated: $2.1M</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Agency Status: OPERATIONAL</span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item"><span class="ticker-dot"></span> Active Agents: 247</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Live Streams Running: 31</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Total Views This Cycle: 8.4M</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Peace Transmissions: ONLINE</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Creator Revenue Generated: $2.1M</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> Agency Status: OPERATIONAL</span>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="tiktok-floaters">
+    <div class="tiktok-frame tf-1">
+      <div class="tf-inner">
+        <div class="tf-video-area">
+          <div class="tf-live-badge">LIVE</div>
+          <div class="tf-viewers">👁 4.2K</div>
+          <div class="tf-play">▶</div>
+        </div>
+        <div class="tf-bar" style="width: 65%;"></div>
+      </div>
+    </div>
+    <div class="tiktok-frame tf-2">
+      <div class="tf-inner">
+        <div class="tf-video-area">
+          <div class="tf-live-badge">LIVE</div>
+          <div class="tf-viewers">👁 12K</div>
+          <div class="tf-play">▶</div>
+        </div>
+        <div class="tf-bar" style="width: 80%;"></div>
+      </div>
+    </div>
+    <div class="tiktok-frame tf-3">
+      <div class="tf-inner">
+        <div class="tf-video-area">
+          <div class="tf-play">▶</div>
+        </div>
+        <div class="tf-bar" style="width: 40%;"></div>
+      </div>
+    </div>
+    <div class="tiktok-frame tf-4">
+      <div class="tf-inner">
+        <div class="tf-video-area">
+          <div class="tf-live-badge">LIVE</div>
+          <div class="tf-play">▶</div>
+        </div>
+        <div class="tf-bar" style="width: 55%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="hero-eyebrow">Agency ID: PTA-001 · Est. 2024</p>
+
+  <div class="peace-clock-wrapper">
+    <div class="orbital-ring ring-3"><div class="ring-dot"></div></div>
+    <div class="orbital-ring ring-2"><div class="ring-dot"></div></div>
+    <div class="orbital-ring ring-1"><div class="ring-dot"></div></div>
+    <div class="peace-sign">
+      <svg class="peace-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="44" stroke="#F26419" stroke-width="4"/>
+        <line x1="50" y1="6" x2="50" y2="94" stroke="#F26419" stroke-width="4" stroke-linecap="round"/>
+        <line x1="50" y1="50" x2="18" y2="78" stroke="#F26419" stroke-width="4" stroke-linecap="round"/>
+        <line x1="50" y1="50" x2="82" y2="78" stroke="#F26419" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="6" fill="#F26419"/>
+      </svg>
+    </div>
+  </div>
+
+  <h1 class="hero-headline">
+    Broadcasting <span class="line-accent">Harmony</span><br>
+    Across the <span class="line-pink">Timeline</span>
+  </h1>
+  <p class="hero-sub">
+    Peace Time Agency is a creator-first TikTok LIVE network. We equip digital diplomats with tools, strategy, and community to grow influence — and income — at the speed of light.
+  </p>
+  <div class="hero-ctas">
+    <a href="#recruit" class="btn-primary">⬡ Join the Agency</a>
+    <a href="#transmissions" class="btn-toggle">▶ Watch Live Feeds</a>
+  </div>
+</section>
+
+<!-- STATS BENTO -->
+<section id="stats" style="padding-top: 0;">
+  <div class="section-label reveal">Galactic Peace Stats</div>
+  <h2 class="section-title reveal">Mission <span class="accent">Control</span> Dashboard</h2>
+  <p class="section-desc reveal">Real-time telemetry from our active creator network across the TikTok LIVE dimension.</p>
+
+  <div class="bento-grid reveal">
+    <div class="bento-card bc-1">
+      <div class="card-icon icon-orange">🌐</div>
+      <div class="stat-number">247</div>
+      <div class="stat-label">Active Agents</div>
+      <div class="stat-sublabel">+18 this lunar cycle</div>
+    </div>
+    <div class="bento-card bc-2">
+      <div class="card-icon icon-pink">📡</div>
+      <div class="stat-number pink-stat">8.4M</div>
+      <div class="stat-label">Monthly Views</div>
+      <div class="stat-sublabel">Across all transmissions</div>
+    </div>
+    <div class="bento-card bc-3">
+      <div class="card-icon icon-orange">💎</div>
+      <div class="stat-number">$2.1M</div>
+      <div class="stat-label">Revenue Generated</div>
+      <div class="stat-sublabel">Creator earnings, YTD</div>
+    </div>
+
+    <div class="bento-card bc-4">
+      <div class="live-indicator">
+        <div class="live-dot"></div>
+        <span class="live-text">Live Signal Feed — Weekly Growth</span>
+      </div>
+      <div class="mini-chart" id="miniChart"></div>
+      <div class="chart-label-row">
+        <span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span>
+      </div>
+      <div style="margin-top:20px; display:flex; gap:24px; flex-wrap:wrap;">
+        <div>
+          <div style="font-size:1.6rem;font-weight:900;color:var(--solar-orange);">+34%</div>
+          <div class="stat-label" style="font-size:9px;">Avg view growth</div>
+        </div>
+        <div>
+          <div style="font-size:1.6rem;font-weight:900;color:var(--cyber-pink);">31</div>
+          <div class="stat-label" style="font-size:9px;">Streams online now</div>
+        </div>
+        <div>
+          <div style="font-size:1.6rem;font-weight:900;color:var(--solar-orange);">96%</div>
+          <div class="stat-label" style="font-size:9px;">Creator retention</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bento-card bc-5 pink-hover">
+      <div class="card-icon icon-pink">🚀</div>
+      <div class="stat-number pink-stat" style="font-size:2.4rem;">Top 1%</div>
+      <div class="stat-label">TikTok LIVE Agency</div>
+      <div class="stat-sublabel">Global ranking</div>
+    </div>
+    <div class="bento-card bc-6">
+      <div class="card-icon icon-orange">⚡</div>
+      <div class="stat-number" style="font-size:2.4rem;">48h</div>
+      <div class="stat-label">Onboarding Speed</div>
+      <div class="stat-sublabel">From apply to live</div>
+    </div>
+    <div class="bento-card bc-7 pink-hover">
+      <div class="card-icon icon-pink">🎯</div>
+      <div class="stat-number pink-stat" style="font-size:2.4rem;">4.9★</div>
+      <div class="stat-label">Creator Rating</div>
+      <div class="stat-sublabel">Average satisfaction</div>
+    </div>
+    <div class="bento-card bc-8">
+      <div class="card-icon icon-orange">🌍</div>
+      <div class="stat-number" style="font-size:2.4rem;">22</div>
+      <div class="stat-label">Countries Reached</div>
+      <div class="stat-sublabel">Global broadcast zone</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSMISSIONS -->
+<section id="transmissions" class="transmissions-section" style="padding-top:0; max-width:1280px;">
+  <div class="trans-header">
+    <div>
+      <div class="section-label reveal">Active Transmissions</div>
+      <h2 class="section-title reveal">Live <span class="accent">Broadcasts</span><br>In Progress <span class="pink">Now</span></h2>
+    </div>
+    <div class="reveal" style="text-align:right;">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim-star);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Streams Online</p>
+      <p style="font-size:2.5rem;font-weight:900;color:var(--solar-orange);">31 <span style="font-size:1rem;color:var(--dim-star);">/ 247</span></p>
+    </div>
+  </div>
+
+  <div class="stream-grid reveal">
+    <!-- Card 1 -->
+    <div class="stream-card">
+      <div class="stream-thumb">
+        <div class="stream-thumb-bg bg-1"></div>
+        <div class="stream-live-pill">LIVE</div>
+        <div class="stream-viewers-pill">👁 12.4K</div>
+        <button class="stream-play-btn">▶</button>
+      </div>
+      <div class="stream-info">
+        <div class="stream-creator">@nova.creates</div>
+        <div class="stream-title">Midnight vibes & Q&A — come talk! ✨</div>
+        <div class="stream-tags">
+          <span class="tag">Music</span>
+          <span class="tag pink">Q&A</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 2 -->
+    <div class="stream-card">
+      <div class="stream-thumb">
+        <div class="stream-thumb-bg bg-2"></div>
+        <div class="stream-live-pill">LIVE</div>
+        <div class="stream-viewers-pill">👁 6.8K</div>
+        <button class="stream-play-btn">▶</button>
+      </div>
+      <div class="stream-info">
+        <div class="stream-creator">@solarbyte</div>
+        <div class="stream-title">Lofi coding session — shipping v2 🔧</div>
+        <div class="stream-tags">
+          <span class="tag">Tech</span>
+          <span class="tag">Lofi</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="stream-card">
+      <div class="stream-thumb">
+        <div class="stream-thumb-bg bg-3"></div>
+        <div class="stream-live-pill">LIVE</div>
+        <div class="stream-viewers-pill">👁 9.1K</div>
+        <button class="stream-play-btn">▶</button>
+      </div>
+      <div class="stream-info">
+        <div class="stream-creator">@peacemedia.eth</div>
+        <div class="stream-title">Unboxing + gifting — you won't believe this 🎁</div>
+        <div class="stream-tags">
+          <span class="tag pink">Gifts</span>
+          <span class="tag">Unbox</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 4 -->
+    <div class="stream-card">
+      <div class="stream-thumb">
+        <div class="stream-thumb-bg bg-4"></div>
+        <div class="stream-live-pill">LIVE</div>
+        <div class="stream-viewers-pill">👁 3.2K</div>
+        <button class="stream-play-btn">▶</button>
+      </div>
+      <div class="stream-info">
+        <div class="stream-creator">@orbit.daily</div>
+        <div class="stream-title">Meditation & breathwork for the timeline 🕊</div>
+        <div class="stream-tags">
+          <span class="tag">Wellness</span>
+          <span class="tag pink">Calm</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="agency" class="why-section" style="padding-top:0; max-width:1280px;">
+  <div class="cosmic-divider" style="max-width:100%; padding:0; margin-bottom:80px;"></div>
+  <div class="why-grid">
+    <div>
+      <div class="section-label reveal">Why Peace Time</div>
+      <h2 class="section-title reveal">Your Mission,<br><span class="accent">Our Infrastructure</span></h2>
+      <p class="section-desc reveal" style="margin-bottom:40px;">We're not just another agency. We're a command center built for creators who want to go LIVE and get paid — with full support at every stage of the mission.</p>
+
+      <div class="why-features">
+        <div class="feature-item reveal">
+          <div class="feature-num">01</div>
+          <div class="feature-content">
+            <h4>Expert Growth Strategists</h4>
+            <p>Dedicated managers who know TikTok LIVE algorithms inside-out. Your growth is our mission briefing.</p>
+          </div>
+        </div>
+        <div class="feature-item pink-border reveal">
+          <div class="feature-num" style="color:var(--cyber-pink)">02</div>
+          <div class="feature-content">
+            <h4>Revenue Maximization</h4>
+            <p>Industry-leading gift optimization strategies. We've helped creators 3–8× their LIVE revenue within 90 days.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal">
+          <div class="feature-num">03</div>
+          <div class="feature-content">
+            <h4>24/7 Creator Support</h4>
+            <p>Real humans, real help. Our mission control is always online — no bots, no ticket queues.</p>
+          </div>
+        </div>
+        <div class="feature-item pink-border reveal">
+          <div class="feature-num" style="color:var(--cyber-pink)">04</div>
+          <div class="feature-content">
+            <h4>No Contracts. Creator-First.</h4>
+            <p>You own your channel, your audience, your brand. We're partners, not gatekeepers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- RECRUITMENT -->
+<section id="recruit" class="recruit-section" style="padding-top:0; max-width:1280px;">
+  <div class="cosmic-divider" style="max-width:100%; padding:0; margin-bottom:80px;"></div>
+
+  <div class="section-label reveal">Agent Recruitment</div>
+  <h2 class="section-title reveal">Ready to <span class="pink">Broadcast</span><br>For the <span class="accent">Universe?</span></h2>
+
+  <div class="recruit-grid">
+    <div class="recruit-main-card reveal">
+      <h3 class="recruit-title">Join the Peace Time <span style="color:var(--solar-orange)">Creator Network</span></h3>
+      <p class="recruit-desc">We're recruiting passionate TikTok LIVE creators who want professional support, real revenue, and a crew that actually cares. Apply in under 2 minutes.</p>
+
+      <div class="recruit-perks">
+        <div class="perk-item"><div class="perk-check">✓</div> Free to join</div>
+        <div class="perk-item"><div class="perk-check">✓</div> Keep your channel</div>
+        <div class="perk-item"><div class="perk-check">✓</div> No lock-in contracts</div>
+        <div class="perk-item"><div class="perk-check">✓</div> Dedicated manager</div>
+        <div class="perk-item"><div class="perk-check">✓</div> Revenue acceleration</div>
+      </div>
+
+      <a href="#" class="btn-primary" style="display:inline-block; font-size:13px; padding:18px 48px;">
+        ⬡ &nbsp;Apply for Agent Status
+      </a>
+    </div>
+
+    <div class="small-cards">
+      <div class="info-card reveal">
+        <div class="card-icon icon-orange">🎙</div>
+        <h4>New Creators Welcome</h4>
+        <p>You don't need 100K followers. We've grown creators from zero to five-figure monthly LIVE income. Start where you are.</p>
+      </div>
+      <div class="info-card reveal">
+        <div class="card-icon icon-pink">📈</div>
+        <h4>Already Established?</h4>
+        <p>We work with mid-tier and top-tier creators too. Unlock agency-level tools and sponsorships that solo creators can't access.</p>
+      </div>
+      <div class="info-card reveal">
+        <div class="card-icon icon-orange">🌐</div>
+        <h4>International Friendly</h4>
+        <p>Our network spans 22 countries. We have multilingual managers ready to support your timezone and language needs.</p>
+      </div>
+      <div class="info-card reveal">
+        <div class="card-icon icon-pink">⚡</div>
+        <h4>Fast-Track Onboarding</h4>
+        <p>Apply today, get a response in 24 hours. Go LIVE with full agency support within 48 hours of approval.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- end .content -->
+
+<!-- TICKER 2 -->
+<div class="ticker-wrap" style="position:relative;z-index:10;margin-top:0;">
+  <div class="ticker-track" style="animation-direction:reverse; animation-duration:40s;">
+    <span class="ticker-item"><span class="ticker-dot"></span> Creator-first. Always.</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> LIVE revenue at scale</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Broadcasting peace since 2024</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> TikTok LIVE specialists</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> 247 agents & growing</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Mission: monetize your passion</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Creator-first. Always.</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> LIVE revenue at scale</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Broadcasting peace since 2024</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> TikTok LIVE specialists</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> 247 agents & growing</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> Mission: monetize your passion</span>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-nebula"></div>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="footer-logo-mark">
+          <div class="footer-logo-circle">
+            <svg width="22" height="22" viewBox="0 0 100 100" fill="none">
+              <circle cx="50" cy="50" r="44" stroke="#F26419" stroke-width="5"/>
+              <line x1="50" y1="6" x2="50" y2="94" stroke="#F26419" stroke-width="5" stroke-linecap="round"/>
+              <line x1="50" y1="50" x2="18" y2="78" stroke="#F26419" stroke-width="5" stroke-linecap="round"/>
+              <line x1="50" y1="50" x2="82" y2="78" stroke="#F26419" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span style="font-weight:800;font-size:1rem;letter-spacing:-0.01em;">Peace Time <span style="color:var(--solar-orange)">Agency</span></span>
+        </a>
+        <p>A premium creator-first TikTok LIVE agency. Building the future of digital diplomacy, one broadcast at a time.</p>
+        <div style="display:flex;gap:12px;margin-top:20px;">
+          <a href="#" style="width:32px;height:32px;border-radius:8px;background:rgba(122,139,160,0.1);border:1px solid rgba(122,139,160,0.15);display:flex;align-items:center;justify-content:center;font-size:14px;text-decoration:none;transition:all 0.25s;" onmouseover="this.style.borderColor='var(--solar-orange)';this.style.boxShadow='0 0 12px var(--glow-orange)'" onmouseout="this.style.borderColor='rgba(122,139,160,0.15)';this.style.boxShadow='none'">𝕏</a>
+          <a href="#" style="width:32px;height:32px;border-radius:8px;background:rgba(122,139,160,0.1);border:1px solid rgba(122,139,160,0.15);display:flex;align-items:center;justify-content:center;font-size:12px;text-decoration:none;transition:all 0.25s;color:inherit;" onmouseover="this.style.borderColor='var(--cyber-pink)'" onmouseout="this.style.borderColor='rgba(122,139,160,0.15)'">♩</a>
+          <a href="#" style="width:32px;height:32px;border-radius:8px;background:rgba(122,139,160,0.1);border:1px solid rgba(122,139,160,0.15);display:flex;align-items:center;justify-content:center;font-size:12px;text-decoration:none;transition:all 0.25s;color:inherit;" onmouseover="this.style.borderColor='var(--solar-orange)'" onmouseout="this.style.borderColor='rgba(122,139,160,0.15)'">in</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Agency</div>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Mission</a></li>
+          <li><a href="#">Team</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Creators</div>
+        <ul class="footer-links">
+          <li><a href="#">Apply Now</a></li>
+          <li><a href="#">Resources</a></li>
+          <li><a href="#">Success Stories</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <ul class="footer-links">
+          <li><a href="#">hello@peacetime.agency</a></li>
+          <li><a href="#">Support Portal</a></li>
+          <li><a href="#">Partnership Inquiries</a></li>
+          <li><a href="#">Media Kit</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2024 Peace Time Agency. All rights reserved. Broadcasting Harmony Across the Timeline.</div>
+      <div style="display:flex;gap:24px;">
+        <a href="#" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(122,139,160,0.4);text-decoration:none;letter-spacing:0.08em;transition:color 0.2s;" onmouseover="this.style.color='var(--dim-star)'" onmouseout="this.style.color='rgba(122,139,160,0.4)'">Privacy</a>
+        <a href="#" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(122,139,160,0.4);text-decoration:none;letter-spacing:0.08em;transition:color 0.2s;" onmouseover="this.style.color='var(--dim-star)'" onmouseout="this.style.color='rgba(122,139,160,0.4)'">Terms</a>
+        <a href="#" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(122,139,160,0.4);text-decoration:none;letter-spacing:0.08em;transition:color 0.2s;" onmouseover="this.style.color='var(--dim-star)'" onmouseout="this.style.color='rgba(122,139,160,0.4)'">Cookies</a>
+      </div>
+      <div class="footer-signal">
+        <div class="signal-bars">
+          <div class="signal-bar sb-1"></div>
+          <div class="signal-bar sb-2"></div>
+          <div class="signal-bar sb-3"></div>
+          <div class="signal-bar sb-4"></div>
+        </div>
+        Signal: STRONG
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* === STARFIELD === */
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  let W, H;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function initStars() {
+    stars = [];
+    const count = Math.floor((W * H) / 6000);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.4 + 0.2,
+        a: Math.random(),
+        da: (Math.random() - 0.5) * 0.004,
+        color: Math.random() > 0.85 ? '#F26419' : Math.random() > 0.7 ? '#F00699' : '#E8EDF5'
+      });
+    }
+  }
+  initStars();
+
+  function drawStars() {
+    ctx.clearRect(0, 0, W, H);
+    stars.forEach(s => {
+      s.a += s.da;
+      if (s.a < 0.05 || s.a > 1) s.da *= -1;
+      ctx.save();
+      ctx.globalAlpha = s.a * 0.7;
+      ctx.fillStyle = s.color;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+
+  /* === MINI CHART === */
+  const chartHeights = [40, 55, 35, 70, 60, 85, 50];
+  const chartContainer = document.getElementById('miniChart');
+  chartHeights.forEach((h, i) => {
+    const bar = document.createElement('div');
+    bar.className = 'chart-bar';
+    bar.style.height = h + '%';
+    bar.style.animationDelay = (i * 0.1) + 's';
+    chartContainer.appendChild(bar);
+  });
+
+  /* === SCROLL REVEAL === */
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+
+  /* === PARALLAX NAV === */
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 50) {
+      nav.style.background = 'rgba(13,27,42,0.82)';
+    } else {
+      nav.style.background = 'var(--glass-bg)';
+    }
+  });
+</script>
+</body>
+</html>
